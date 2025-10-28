@@ -1,0 +1,74 @@
+package frc.robot.subsystem.tbone;
+
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
+import frc.robot.lib.MechanismState;
+import org.littletonrobotics.junction.Logger;
+
+public class TBoneSubsystem {
+    private final TBoneIO tBone;
+
+    private MechanismState state;
+    private final PIDController controller = new PIDController(4,0,0);
+
+    private double setpoint;
+
+    private TBoneSubsystem() {
+        tBone = new TboneReal();
+
+        controller.setTolerance(0);
+        setState(MechanismState.stored);
+    }
+
+    public void readPeriodic() {
+        tBone.readPeriodic();
+    }
+
+    public void writePeriodic() {
+        if (state == MechanismState.stored)
+        {
+            tBone.setVoltage(
+                    MathUtil.clamp(
+                            controller.calculate(tBone.getEncoderPosition(), setpoint),-.5,.5
+                    )
+            );
+        } else if (state == MechanismState.deployed)
+        {
+            tBone.setVoltage(
+                    MathUtil.clamp(
+                            controller.calculate(tBone.getEncoderPosition(), setpoint),-6,6
+                    )
+            );
+        }
+
+        Logger.recordOutput("T-Bone/Setpoint", setpoint);
+        Logger.recordOutput("T-Bone/AtSetpoint", controller.atSetpoint());
+        tBone.writePeriodic();
+    }
+
+    public MechanismState getState() {
+        return state;
+    }
+
+    public void setState(MechanismState state) {
+        this.state = state;
+        switch (getState())
+        {
+            case deployed -> {
+                setpoint = TboneConstants.DEPLOY_SETPOINT;
+            }
+            case stored -> {
+                setpoint = TboneConstants.STORED_SETPOINT;
+            }
+        }
+    }
+
+    public void toggleState() {
+        if (this.state == MechanismState.deployed) {
+            setState(MechanismState.stored);
+        } else {
+            setState(MechanismState.deployed);
+        }
+    }
+}
+
