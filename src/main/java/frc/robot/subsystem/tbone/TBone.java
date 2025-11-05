@@ -5,7 +5,7 @@ import edu.wpi.first.math.controller.PIDController;
 import frc.robot.lib.MechanismState;
 import org.littletonrobotics.junction.Logger;
 
-public class TBoneSubsystem {
+public class TBone {
     private final TBoneIO tBone;
 
     private MechanismState state;
@@ -13,7 +13,7 @@ public class TBoneSubsystem {
 
     private double setpoint;
 
-    private TBoneSubsystem() {
+    public TBone() {
         tBone = new TboneReal();
 
         controller.setTolerance(0);

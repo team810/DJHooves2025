@@ -5,13 +5,11 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import frc.robot.lib.MechanismState;
 import org.littletonrobotics.junction.Logger;
 
-public class DeflectorSubsystem {
-
-    private static DeflectorSubsystem INSTANCE;
+public class Deflector {
     private final DeflectorIO deflector;
     private MechanismState deflectorState;
 
-    private DeflectorSubsystem() {
+    public Deflector() {
         deflector = new DeflectorReal();
 
         deflectorState = MechanismState.stored;

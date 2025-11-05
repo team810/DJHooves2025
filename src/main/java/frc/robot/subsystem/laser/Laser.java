@@ -6,14 +6,13 @@ import frc.robot.Robot;
 
 import org.littletonrobotics.junction.Logger;
 
-public class LaserSubsystem {
-
+public class Laser {
     private final LaserCan sensor;
     double distance = 0;
 
     private LaserState state;
 
-    private LaserSubsystem() {
+    public Laser() {
         sensor = new LaserCan(LaserConstants.ID);
 
         if (Robot.isReal())
@@ -47,7 +46,7 @@ public class LaserSubsystem {
         return state;
     }
 
-    public void writePeriodic() {
+    public void readPeriodic() {
         Logger.recordOutput("LaserSensor/Distance", distance);
         Logger.recordOutput("LaserSensor/State", state);
     }

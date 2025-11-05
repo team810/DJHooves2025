@@ -2,15 +2,12 @@ package frc.robot.subsystem.intake;
 
 import org.littletonrobotics.junction.Logger;
 
-public class IntakeSubsystem {
-
-    private static IntakeSubsystem INSTANCE = new IntakeSubsystem();
-
+public class Intake {
     private final IntakeIO intake;
 
     private IntakeStates state;
 
-    private IntakeSubsystem() {
+    public Intake() {
 
         intake = new IntakeReal();
         state = IntakeStates.off;
