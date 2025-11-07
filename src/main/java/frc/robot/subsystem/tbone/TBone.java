@@ -6,6 +6,9 @@ import frc.robot.lib.MechanismState;
 import org.littletonrobotics.junction.Logger;
 
 public class TBone {
+    private final static TBone INSTANCE = new TBone();
+    public static TBone getInstance() {return INSTANCE;}
+
     private final TBoneIO tBone;
 
     private MechanismState state;
@@ -13,7 +16,7 @@ public class TBone {
 
     private double setpoint;
 
-    public TBone() {
+    private TBone() {
         tBone = new TboneReal();
 
         controller.setTolerance(0);

@@ -19,13 +19,6 @@ import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 public class Robot extends LoggedRobot {
-    private final Drivetrain drivetrain;
-    private final Deflector deflector;
-    private final Intake intake;
-    private final Laser laser;
-    private final Shooter shooter;
-    private final TBone tbone;
-
 
     public Robot() {
         Logger.recordMetadata("ProjectName", "DJHooves");
@@ -40,20 +33,12 @@ public class Robot extends LoggedRobot {
 
         Logger.start();
 
-        drivetrain = new Drivetrain();
-        deflector = new Deflector();
-        intake = new Intake();
-        laser = new Laser();
-        shooter = new Shooter();
-        tbone = new TBone();
-
         IO.Initialize(
                 IO.PrimaryDriverProfiles.Parm,
                 IO.SecondaryDriverProfiles.Joystick
         );
 
         CommandScheduler.getInstance().setPeriod(.015);
-
 
     }
 
@@ -65,20 +50,20 @@ public class Robot extends LoggedRobot {
     }
 
     public void readPeriodic() {
-        drivetrain.readPeriodic();
-        deflector.readPeriodic();
-        intake.readPeriodic();
-        shooter.readPeriodic();
-        tbone.readPeriodic();
-        laser.readPeriodic();
+        Drivetrain.getInstance().readPeriodic();
+        Deflector.getInstance().readPeriodic();
+        Intake.getInstance().readPeriodic();
+        Laser.getInstance().readPeriodic();
+        Shooter.getInstance().readPeriodic();
+        TBone.getInstance().readPeriodic();
     }
 
     public void writePeriodic() {
-        drivetrain.writePeriodic();
-        deflector.writePeriodic();
-        intake.writePeriodic();
-        shooter.writePeriodic();
-        tbone.writePeriodic();
+        Drivetrain.getInstance().writePeriodic();
+        Deflector.getInstance().writePeriodic();
+        Intake.getInstance().writePeriodic();
+        Shooter.getInstance().writePeriodic();
+        TBone.getInstance().writePeriodic();
     }
 
     

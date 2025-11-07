@@ -6,10 +6,13 @@ import frc.robot.lib.MechanismState;
 import org.littletonrobotics.junction.Logger;
 
 public class Deflector {
+    private final static Deflector INSTANCE = new Deflector();
+    public static Deflector getInstance() {return INSTANCE;}
+
     private final DeflectorIO deflector;
     private MechanismState deflectorState;
 
-    public Deflector() {
+    private Deflector() {
         deflector = new DeflectorReal();
 
         deflectorState = MechanismState.stored;

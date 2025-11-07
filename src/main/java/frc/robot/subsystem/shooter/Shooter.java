@@ -4,6 +4,9 @@ package frc.robot.subsystem.shooter;
 import org.littletonrobotics.junction.Logger;
 
 public class Shooter {
+    private final static Shooter INSTANCE = new Shooter();
+    public static Shooter getInstance() {return INSTANCE;}
+
     private final ShooterIO shooter;
 
     private double topTargetSpeed;
@@ -14,7 +17,7 @@ public class Shooter {
     private double targetTopTestRPM;
     private double targetBottomTestRPM;
 
-    public Shooter()
+    private Shooter()
     {
         shooter = new ShooterReal();
 

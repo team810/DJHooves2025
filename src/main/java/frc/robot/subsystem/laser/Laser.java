@@ -7,12 +7,15 @@ import frc.robot.Robot;
 import org.littletonrobotics.junction.Logger;
 
 public class Laser {
+    private static final Laser INSTANCE = new Laser();
+    public static Laser getInstance() {return INSTANCE;}
+
     private final LaserCan sensor;
     double distance = 0;
 
     private LaserState state;
 
-    public Laser() {
+    private Laser() {
         sensor = new LaserCan(LaserConstants.ID);
 
         if (Robot.isReal())

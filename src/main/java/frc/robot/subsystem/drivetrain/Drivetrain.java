@@ -10,10 +10,13 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
+import frc.robot.Robot;
 import frc.robot.subsystem.drivetrain.control.SwerveControlIO;
 import org.littletonrobotics.junction.Logger;
 
 public class Drivetrain {
+    private static Drivetrain INSTANCE = new Drivetrain();
+    public static Drivetrain getInstance() {return INSTANCE;}
 
     private final Pigeon2 gyro;
     private final StatusSignal<Angle> yawSignal;
@@ -27,7 +30,7 @@ public class Drivetrain {
 
     private SwerveControlIO control;
 
-    public Drivetrain() {
+    private Drivetrain() {
         gyro = new Pigeon2(DrivetrainConstants.GYRO_ID, DrivetrainConstants.CANBUS);
         yawSignal = gyro.getYaw();
         yawSignal.setUpdateFrequency(250);
@@ -36,6 +39,7 @@ public class Drivetrain {
         frontRightModule = new SwerveModuleHybrid(SwerveModuleID.FrontRight);
         backLeftModule = new SwerveModuleHybrid(SwerveModuleID.BackLeft);
         backRightModule = new SwerveModuleHybrid(SwerveModuleID.BackRight);
+
 
         estimator = new SwerveDrivePoseEstimator(
                 DrivetrainConstants.SWERVE_KINEMATICS,

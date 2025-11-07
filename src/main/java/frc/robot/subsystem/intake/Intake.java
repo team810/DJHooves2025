@@ -3,8 +3,10 @@ package frc.robot.subsystem.intake;
 import org.littletonrobotics.junction.Logger;
 
 public class Intake {
-    private final IntakeIO intake;
+    private final static Intake INSTANCE = new Intake();
+    public static Intake getInstance() {return INSTANCE;}
 
+    private final IntakeIO intake;
     private IntakeStates state;
 
     public Intake() {
