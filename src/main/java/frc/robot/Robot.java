@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.IO.Controls;
@@ -13,6 +14,7 @@ import frc.robot.commands.IntakeCommand;
 import frc.robot.commands.RevCommand;
 import frc.robot.subsystem.deflector.Deflector;
 import frc.robot.subsystem.drivetrain.Drivetrain;
+import frc.robot.subsystem.drivetrain.DrivetrainConstants;
 import frc.robot.subsystem.drivetrain.control.ManualControlFOC;
 import frc.robot.subsystem.intake.Intake;
 import frc.robot.subsystem.intake.IntakeStates;
@@ -23,7 +25,6 @@ import frc.robot.subsystem.tbone.TBone;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
-import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
 public class Robot extends LoggedRobot {
     private final Trigger intakeGround;
@@ -39,14 +40,13 @@ public class Robot extends LoggedRobot {
         Logger.recordMetadata("ProjectName", "DJHooves");
 
         if (isReal()) {
-            Logger.addDataReceiver(new WPILOGWriter());
             Logger.addDataReceiver(new NT4Publisher());
         } else {
-            Logger.addDataReceiver(new WPILOGWriter());
             Logger.addDataReceiver(new NT4Publisher());
         }
 
         Logger.start();
+        DriverStation.silenceJoystickConnectionWarning(true);
 
         IO.Initialize(
                 IO.PrimaryDriverProfiles.Parm,
@@ -90,12 +90,12 @@ public class Robot extends LoggedRobot {
         readPeriodic();
 
         swerveControl = new ManualControlFOC(
-            IO.getJoystickValue(Controls.xDriveVelocity).get(),
-            IO.getJoystickValue(Controls.yDriveVelocity).get(),
-            IO.getJoystickValue(Controls.thetaDriveVelocity).get()
+            IO.getJoystickValue(Controls.xDriveVelocity).get() * 5.2,
+            IO.getJoystickValue(Controls.yDriveVelocity).get() * 5.2,
+            IO.getJoystickValue(
+                    Controls.thetaDriveVelocity).get() * 5.2 * (Math.sqrt((DrivetrainConstants.WHEEL_BASE_LENGTH * DrivetrainConstants.WHEEL_BASE_LENGTH)+(DrivetrainConstants.WHEEL_BASE_WIDTH * DrivetrainConstants.WHEEL_BASE_WIDTH)) * Math.PI)
         );
         Drivetrain.getInstance().setControl(swerveControl);
-
         CommandScheduler.getInstance().run();
         writePeriodic();
     }

@@ -12,12 +12,12 @@ import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Distance;
 
 public class DrivetrainConstants {
-    public static final String CANBUS = "Drivetrain";
+    public static final String CANBUS = "drive train";
     public static final int GYRO_ID = 9;
 
     public static final Distance WHEEL_RADIUS = Distance.ofBaseUnits(2.0, Units.Inches);
 
-    public static final double STEER_KP = 1;
+    public static final double STEER_KP = 5;
     public static final double STEER_KI = 0;
     public static final double STEER_KD = 0;
     public static final double STEER_MAX_OUTPUT = 12;
@@ -59,16 +59,16 @@ public class DrivetrainConstants {
     public static int getSteerID(SwerveModuleID id) {
         switch (id) {
             case FrontLeft -> {
-                return 1;
+                return 8;
             }
             case FrontRight -> {
-                return 2;
+                return 6;
             }
             case BackLeft -> {
-                return 3;
+                return 5;
             }
             case BackRight -> {
-                return 4;
+                return 7;
             }
         }
         return 0;
@@ -86,7 +86,7 @@ public class DrivetrainConstants {
                 return 7;
             }
             case BackRight -> {
-                return 9;
+                return 8;
             }
         }
         return 0;
@@ -134,7 +134,7 @@ public class DrivetrainConstants {
         config.Slot0.kP = 0;
         config.Slot0.kI = 0;
         config.Slot0.kD = 0;
-        config.Slot0.kV = 0; // FIXME
+        config.Slot0.kV = .124; // FIXME
         config.Slot0.kA = 0;
         config.Slot0.kG = 0;
 

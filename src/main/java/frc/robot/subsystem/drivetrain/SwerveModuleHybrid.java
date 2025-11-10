@@ -81,6 +81,7 @@ public class SwerveModuleHybrid implements SwerveModuleIO {
         steerMotor = new SparkMax(DrivetrainConstants.getSteerID(id), SparkLowLevel.MotorType.kBrushless);
         SparkMaxConfig config = new SparkMaxConfig();
         config.smartCurrentLimit(20);
+        config.inverted(true);
         steerMotor.configure(config,SparkMax.ResetMode.kNoResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
         steerEncoder = new CANcoder(DrivetrainConstants.getEncoderID(id), DrivetrainConstants.CANBUS);
@@ -91,8 +92,8 @@ public class SwerveModuleHybrid implements SwerveModuleIO {
                 DrivetrainConstants.STEER_KD
         );
         steerController.enableContinuousInput(-Math.PI, Math.PI);
-
         thetaStatusSignal = steerEncoder.getAbsolutePosition();
+
         StatusSignal.setUpdateFrequencyForAll(250,
                 driveAngularPosition,
                 driveAngualrVelocity,
@@ -114,7 +115,8 @@ public class SwerveModuleHybrid implements SwerveModuleIO {
 
     @Override
     public void readPeriodic() {
-        StatusSignal.refreshAll(
+        StatusSignal.waitForAll(
+                1,
                 driveAngularPosition,
                 driveAngualrVelocity,
                 driveAppliedVoltage,
@@ -123,7 +125,6 @@ public class SwerveModuleHybrid implements SwerveModuleIO {
 
                 thetaStatusSignal
         );
-
         driveLinearPosition = Distance.ofBaseUnits(
                 driveAngularPosition.getValue().in(Units.Radians) * DrivetrainConstants.WHEEL_RADIUS.in(Units.Meter),
                 Units.Meters
@@ -137,7 +138,7 @@ public class SwerveModuleHybrid implements SwerveModuleIO {
                 driveLinearPosition,
                 Rotation2d.fromRadians(thetaStatusSignal.getValue().in(Units.Radians))
         );
-
+        currentState = new SwerveModuleState(0, Rotation2d.fromRadians(thetaStatusSignal.getValue().in(Units.Radians)));
         Logger.recordOutput("Drivetrain/" + idString + "/CurrentState", currentState);
         Logger.recordOutput("Drivetrain/" + idString + "/Drive/Rotations", driveAngularPosition.getValue().in(Units.Rotations));
         Logger.recordOutput("Drivetrain/" + idString + "/Drive/CurrentRotationsPerSecond", driveAngualrVelocity.getValue().in(Units.RotationsPerSecond));
@@ -155,21 +156,21 @@ public class SwerveModuleHybrid implements SwerveModuleIO {
 
         // Drive control
         AngularVelocity driveTargetVelocity = AngularVelocity.ofBaseUnits(
-                targetState.speedMetersPerSecond / DrivetrainConstants.WHEEL_RADIUS.in(Units.Meters),
+                (targetState.speedMetersPerSecond / (DrivetrainConstants.WHEEL_RADIUS.in(Units.Meters) * Math.PI * 2) * 5.9),
                 Units.RotationsPerSecond
         );
         driveControl.Velocity = driveTargetVelocity.in(Units.RotationsPerSecond);
+
         driveMotor.setControl(driveControl);
 
         // Steer Control
         double steerOutput = MathUtil.clamp(
-                MathUtil.applyDeadband(
-                    steerController.calculate(thetaStatusSignal.getValue().in(Units.Radians), targetState.angle.getRadians()),
-                    .1
-                ),
+                steerController.calculate(thetaStatusSignal.getValue().in(Units.Radians), targetState.angle.getRadians()),
                 -DrivetrainConstants.STEER_MAX_OUTPUT,
                 DrivetrainConstants.STEER_MAX_OUTPUT
         );
+
+        steerMotor.setVoltage(steerOutput);
 
         Logger.recordOutput("Drivetrain/" + idString + "/TargetState", targetState);
         Logger.recordOutput("Drivetrain/" + idString + "/Drive/TargetRotationsPerSecond", driveTargetVelocity.in(Units.RotationsPerSecond));

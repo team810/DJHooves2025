@@ -2,7 +2,6 @@ package frc.robot.subsystem.deflector;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
-import org.littletonrobotics.junction.Logger;
 
 public class DeflectorReal implements DeflectorIO{
     private final DoubleSolenoid deflector;
@@ -22,6 +21,6 @@ public class DeflectorReal implements DeflectorIO{
 
     @Override
     public void writePeriodic() {
-        Logger.recordOutput("Deflector/SolenoidValue", deflector.get());
+//        Logger.recordOutput("Deflector/SolenoidValue", deflector.get());
     }
 }

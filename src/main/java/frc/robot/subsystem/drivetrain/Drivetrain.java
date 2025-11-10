@@ -55,6 +55,11 @@ public class Drivetrain {
     }
 
     public void readPeriodic() {
+        frontLeftModule.readPeriodic();
+        frontRightModule.readPeriodic();
+        backLeftModule.readPeriodic();
+        backRightModule.readPeriodic();
+
         StatusSignal.refreshAll(yawSignal);
         estimator.update(
                 Rotation2d.fromRadians(yawSignal.getValue().in(Units.Radians)),
@@ -76,6 +81,11 @@ public class Drivetrain {
         frontRightModule.setState(states[1]);
         backLeftModule.setState(states[2]);
         backRightModule.setState(states[3]);
+
+        frontLeftModule.writePeriodic();
+        frontRightModule.writePeriodic();
+        backLeftModule.writePeriodic();
+        backRightModule.writePeriodic();
 
         Logger.recordOutput("Drivetrain/ChassisSpeeds", speeds);
     }
