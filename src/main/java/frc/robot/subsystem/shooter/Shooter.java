@@ -12,7 +12,7 @@ public class Shooter {
     private double topTargetSpeed;
     private double bottomTargetSpeed;
 
-    private ShooterMode shooterMode;
+    private ShooterState shooterMode;
 
     private double targetTopTestRPM;
     private double targetBottomTestRPM;
@@ -24,7 +24,7 @@ public class Shooter {
         topTargetSpeed = 0;
         bottomTargetSpeed = 0;
 
-        shooterMode = ShooterMode.off;
+        shooterMode = ShooterState.off;
 
         targetTopTestRPM = 2000;
         targetBottomTestRPM = 2000;
@@ -42,7 +42,7 @@ public class Shooter {
         shooter.writePeriodic();
     }
 
-    public void setShooterMode(ShooterMode shooterMode) {
+    public void setShooterMode(ShooterState shooterMode) {
         this.shooterMode = shooterMode;
 
         switch (shooterMode)

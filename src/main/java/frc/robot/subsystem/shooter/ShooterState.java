@@ -1,6 +1,6 @@
 package frc.robot.subsystem.shooter;
 
-public enum ShooterMode {
+public enum ShooterState {
     SourceIntake,
     Amp,
     Tape,
