@@ -21,7 +21,7 @@ public class ManualControlFOC implements  SwerveControlIO{
                 VerticalVelocity,
                 Omega
         );
-        speeds = ChassisSpeeds.fromRobotRelativeSpeeds(speeds, poseMeters.getRotation());
+        speeds = ChassisSpeeds.fromFieldRelativeSpeeds(speeds, poseMeters.getRotation());
         return speeds;
     }
 }

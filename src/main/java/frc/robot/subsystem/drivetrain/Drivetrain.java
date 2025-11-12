@@ -2,6 +2,7 @@ package frc.robot.subsystem.drivetrain;
 
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.Pigeon2;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,7 +11,6 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Units;
 import edu.wpi.first.units.measure.Angle;
-import frc.robot.Robot;
 import frc.robot.subsystem.drivetrain.control.SwerveControlIO;
 import org.littletonrobotics.junction.Logger;
 
@@ -62,7 +62,7 @@ public class Drivetrain {
 
         StatusSignal.refreshAll(yawSignal);
         estimator.update(
-                Rotation2d.fromRadians(yawSignal.getValue().in(Units.Radians)),
+                Rotation2d.fromRadians(MathUtil.angleModulus(yawSignal.getValue().in(Units.Radians))),
                 new SwerveModulePosition[]{
                         frontLeftModule.getModulePosition(),
                         frontRightModule.getModulePosition(),
@@ -70,6 +70,7 @@ public class Drivetrain {
                         backRightModule.getModulePosition()
                 }
         );
+        Logger.recordOutput("yaw", yawSignal.getValue().in(Units.Radians));
         Logger.recordOutput("EstimatedPose", estimator.getEstimatedPosition());
     }
 

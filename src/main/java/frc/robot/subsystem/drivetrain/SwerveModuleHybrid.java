@@ -152,15 +152,15 @@ public class SwerveModuleHybrid implements SwerveModuleIO {
     public void writePeriodic() {
         // Optimize
         targetState.optimize(Rotation2d.fromRadians(thetaStatusSignal.getValue().in(Units.Radians)));
-        targetState.cosineScale(Rotation2d.fromRadians(thetaStatusSignal.getValue().in(Units.Radians)));
+//        targetState.cosineScale(Rotation2d.fromRadians(thetaStatusSignal.getValue().in(Units.Radians)));
 
         // Drive control
+
         AngularVelocity driveTargetVelocity = AngularVelocity.ofBaseUnits(
-                (targetState.speedMetersPerSecond / (DrivetrainConstants.WHEEL_RADIUS.in(Units.Meters) * Math.PI * 2) * 5.9),
+                MathUtil.clamp(targetState.speedMetersPerSecond / 5.2, -1, 1) * 96,
                 Units.RotationsPerSecond
         );
-        driveControl.Velocity = driveTargetVelocity.in(Units.RotationsPerSecond);
-
+        driveControl.Velocity = MathUtil.clamp(targetState.speedMetersPerSecond / 5.2, -1, 1) * 96;
         driveMotor.setControl(driveControl);
 
         // Steer Control

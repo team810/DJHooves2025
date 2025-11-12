@@ -5,6 +5,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -90,10 +91,10 @@ public class Robot extends LoggedRobot {
         readPeriodic();
 
         swerveControl = new ManualControlFOC(
-            IO.getJoystickValue(Controls.xDriveVelocity).get() * 5.2,
-            IO.getJoystickValue(Controls.yDriveVelocity).get() * 5.2,
-            IO.getJoystickValue(
-                    Controls.thetaDriveVelocity).get() * 5.2 * (Math.sqrt((DrivetrainConstants.WHEEL_BASE_LENGTH * DrivetrainConstants.WHEEL_BASE_LENGTH)+(DrivetrainConstants.WHEEL_BASE_WIDTH * DrivetrainConstants.WHEEL_BASE_WIDTH)) * Math.PI)
+            -MathUtil.applyDeadband(IO.getJoystickValue(Controls.xDriveVelocity).get() ,.05) * 5.2,
+            -MathUtil.applyDeadband(IO.getJoystickValue(Controls.yDriveVelocity).get() , .05) * 5.2,
+            -MathUtil.applyDeadband(IO.getJoystickValue(
+                    Controls.thetaDriveVelocity).get(), .1)  * 5.2 * (Math.sqrt((DrivetrainConstants.WHEEL_BASE_LENGTH * DrivetrainConstants.WHEEL_BASE_LENGTH)+(DrivetrainConstants.WHEEL_BASE_WIDTH * DrivetrainConstants.WHEEL_BASE_WIDTH)) * Math.PI)
         );
         Drivetrain.getInstance().setControl(swerveControl);
         CommandScheduler.getInstance().run();

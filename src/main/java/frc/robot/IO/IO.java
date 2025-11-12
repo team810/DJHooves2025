@@ -30,8 +30,8 @@ public abstract class IO {
 
         switch (primaryProfile) {
             case Parm:
-                controlsJoystick.put(Controls.xDriveVelocity, primary::getLeftX);
-                controlsJoystick.put(Controls.yDriveVelocity, primary::getLeftY);
+                controlsJoystick.put(Controls.xDriveVelocity, primary::getLeftY);
+                controlsJoystick.put(Controls.yDriveVelocity, primary::getLeftX);
                 controlsJoystick.put(Controls.thetaDriveVelocity, primary::getRightX);
 
                 controlsButtons.put(Controls.resetGyro, primary::getAButton);
