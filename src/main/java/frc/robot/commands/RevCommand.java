@@ -13,6 +13,7 @@ public class RevCommand extends Command {
     @Override
     public void initialize() {
         Shooter.getInstance().setShooterMode(state);
+        
     }
 
     @Override

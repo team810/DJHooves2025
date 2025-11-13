@@ -1,6 +1,8 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.lib.MechanismState;
+import frc.robot.subsystem.deflector.Deflector;
 import frc.robot.subsystem.intake.Intake;
 import frc.robot.subsystem.intake.IntakeStates;
 import frc.robot.subsystem.laser.Laser;
@@ -21,6 +23,7 @@ public class IntakeCommand extends Command {
         Intake.getInstance().setState(state);
         if (state == IntakeStates.rev && !ignoreLaser) {
             Shooter.getInstance().setShooterMode(ShooterState.SourceIntake);
+            Deflector.getInstance().setDeflectorState(MechanismState.deployed);
         }
     }
     @Override
@@ -28,6 +31,7 @@ public class IntakeCommand extends Command {
         Intake.getInstance().setState(IntakeStates.off);
         if (state == IntakeStates.rev && !ignoreLaser) {
             Shooter.getInstance().setShooterMode(ShooterState.off);
+            Deflector.getInstance().setDeflectorState(MechanismState.stored);
         }
     }
 

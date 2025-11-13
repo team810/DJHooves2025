@@ -56,8 +56,8 @@ public class Shooter {
                 bottomTargetSpeed = 2500;
             }
             case Tape -> {
-                topTargetSpeed = 2300;
-                bottomTargetSpeed = 2300;
+                topTargetSpeed = 3250;
+                bottomTargetSpeed = 3250;
             }
             case Subwoofer -> {
                 topTargetSpeed = 2300;

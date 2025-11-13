@@ -90,7 +90,9 @@ public class Drivetrain {
 
         Logger.recordOutput("Drivetrain/ChassisSpeeds", speeds);
     }
-
+    public void resetGyro() {
+        setPose(new Pose2d(estimator.getEstimatedPosition().getX(), estimator.getEstimatedPosition().getY(), new Rotation2d(0)));
+    }
     public void setControl(SwerveControlIO control) {
         this.control = control;
     }

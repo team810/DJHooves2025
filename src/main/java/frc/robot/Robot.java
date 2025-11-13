@@ -8,6 +8,7 @@ package frc.robot;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.IO.Controls;
 import frc.robot.IO.IO;
@@ -34,6 +35,7 @@ public class Robot extends LoggedRobot {
     private final Trigger revFar;
     private final Trigger revClose;
     private final Trigger score;
+    private final Trigger resetGyro;
 
     private ManualControlFOC swerveControl;
 
@@ -62,6 +64,7 @@ public class Robot extends LoggedRobot {
         revFar = new Trigger(IO.getButtonValue(Controls.revFar));
         revClose = new Trigger(IO.getButtonValue(Controls.revClose));
         score = new Trigger(IO.getButtonValue(Controls.score));
+        resetGyro = new Trigger(IO.getButtonValue(Controls.resetGyro));
 
         intakeGround.whileTrue(
             new IntakeCommand(IntakeStates.fwd, false)
@@ -75,13 +78,14 @@ public class Robot extends LoggedRobot {
         score.whileTrue(
             new IntakeCommand(IntakeStates.fwd, true)
         );
-
         revFar.whileTrue(
             new RevCommand(ShooterState.Tape)
         );
-
         revClose.whileTrue(
             new RevCommand(ShooterState.Subwoofer)
+        );
+        resetGyro.whileTrue(
+                new InstantCommand(Drivetrain.getInstance()::resetGyro)
         );
 
     }
