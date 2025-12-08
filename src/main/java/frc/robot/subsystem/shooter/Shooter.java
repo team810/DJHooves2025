@@ -49,7 +49,7 @@ public class Shooter {
         {
             case SourceIntake -> {
                 topTargetSpeed = -2000;
-                bottomTargetSpeed = -2000;
+                bottomTargetSpeed = 2000;
             }
             case Amp -> {
                 topTargetSpeed = 2500;
@@ -57,11 +57,11 @@ public class Shooter {
             }
             case Tape -> {
                 topTargetSpeed = 3250;
-                bottomTargetSpeed = 3250;
+                bottomTargetSpeed = -3250;
             }
             case Subwoofer -> {
                 topTargetSpeed = 2300;
-                bottomTargetSpeed = 2300;
+                bottomTargetSpeed = -2300;
             }
             case test -> {
                 topTargetSpeed = targetTopTestRPM;

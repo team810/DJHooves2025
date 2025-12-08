@@ -38,9 +38,8 @@ public class ShooterReal implements ShooterIO {
         config.closedLoop.d(0);
         config.closedLoop.velocityFF(.000185);
 
-        bottomMotor.configure(config, SparkBase.ResetMode.kNoResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
-        config.inverted(true);
         topMotor.configure(config, SparkBase.ResetMode.kNoResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
+        bottomMotor.configure(config, SparkBase.ResetMode.kNoResetSafeParameters, SparkBase.PersistMode.kPersistParameters);
 
         topMotor.clearFaults();
         bottomMotor.clearFaults();
